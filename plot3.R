@@ -1,0 +1,12 @@
+powdata<-read.delim("household_power_consumption.txt",header=TRUE,sep=";",na.strings="?",stringsAsFactors=FALSE)
+powdata$Date<-as.Date(powdata$Date,format="%d/%m/%Y")
+powdata$DateTime<-paste(powdata$Date,powdata$Time)
+powdata$DateTime<-strptime(powdata$DateTime,format="%Y-%m-%d %H:%M:%S")
+subpowdata<-powdata[powdata$Date>=as.Date("2007-02-01")&powdata$Date<as.Date("2007-02-03"),]
+png("plot3.png",width=480,height=480)
+plot(subpowdata$DateTime,subpowdata$Sub_metering_1,type="n",xlab="",ylab="Energy sub metering")
+points(subpowdata$DateTime,subpowdata$Sub_metering_1,type="l",col="black")
+points(subpowdata$DateTime,subpowdata$Sub_metering_2,type="l",col="red")
+points(subpowdata$DateTime,subpowdata$Sub_metering_3,type="l",col="blue")
+legend("topright",col=c("black","red","blue"),legend=c("Sub_metering_1","Sub_metering_2","Sub_metering_3"),lty=1)
+dev.off()
